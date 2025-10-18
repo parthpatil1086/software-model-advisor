@@ -29,4 +29,26 @@ Can be deployed on:
 
 Used as an **Industrial Training Project (ITER)** to demonstrate practical software project planning, estimation, and AI-assisted model suggestion.
 
+updated 
+# Smart Software Model & Budget Suggestion System
+
+## 🚀 Overview
+An AI-powered Streamlit app that suggests the best software development model, estimates cost, optimizes budget, and generates a quotation PDF.
+
+## 🛠️ Setup
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+
+💡 Features
+
+Intelligent SDLC model suggestion
+
+ML-based cost estimation
+
+Budget optimization advice
+
+Professional quotation PDF export
+
+
 ---

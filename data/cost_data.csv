@@ -1,0 +1,6 @@
+client_name,project_name,domain,goal,team_size,duration,experience,manager,testing,complexity,integration,stack,scalability,deadline,budget,maintenance,payment,risk,priority,involvement,estimated_cost
+Alice,ShopEase,Web App,E-commerce,5,1–3 months,Intermediate,Yes,Yes,Medium,APIs,Open Source,Medium,Yes,50K–1L,Yes,Milestone-based,Medium,Quality,Active,85000
+Bob,HealthTrack,Mobile App,Healthcare,8,3–6 months,Expert,Yes,Yes,High,Third-party tools,Custom,High,Yes,1L–5L,Yes,Fixed Cost,High,Quality,Active,420000
+Charlie,FinancePro,AI Tool,Finance,3,<1 month,Intermediate,No,No,Low,None,Open Source,Low,No,50K–1L,No,Hourly,Low,Speed,Moderate,45000
+Diana,LearnMate,Web App,Education,6,3–6 months,Beginner,Yes,Yes,Medium,APIs,Hybrid,Medium,Yes,1L–5L,Yes,Milestone-based,Medium,Cost,Active,150000
+Eve,EntertainX,Mobile App,Entertainment,4,1–3 months,Intermediate,No,Yes,Low,None,Open Source,Low,No,50K–1L,No,Hourly,Medium,Speed,Low,60000

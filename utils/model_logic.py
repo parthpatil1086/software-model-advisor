@@ -1,28 +1,26 @@
-def suggest_model(input_data):
-    """
-    Suggests a software development model based on project input.
 
-    Parameters:
-        input_data (dict): A dictionary containing client input.
+import joblib
+import numpy as np
 
-    Returns:
-        str: Suggested development model name.
-    """
-
-    domain = input_data.get("domain")
-    team_size = input_data.get("team_size")
-    duration = input_data.get("duration")
-    deadline = input_data.get("deadline")
-    budget = input_data.get("budget")
-
-    # Rule-based model suggestion (basic logic for now)
-    if domain == "Enterprise Software" or team_size > 10:
-        return "Spiral Model"
-    elif deadline == "Yes" and duration == "<1 month":
-        return "Waterfall Model"
-    elif domain == "Web App" or domain == "Mobile App":
-        return "Agile Model"
-    elif budget == "<50K":
-        return "Rapid Application Development (RAD)"
-    else:
-        return "Incremental Model"
+def suggest_model(client_input):
+    """Predicts best software model using trained ML model"""
+    try:
+        model = joblib.load("ml_models/model_suggestion.pkl")
+        # Extract features (simplified)
+        features = np.array([
+            len(client_input["goal"]),
+            client_input["team_size"],
+            {"Low": 1, "Medium": 2, "High": 3}.get(client_input["complexity"], 2)
+        ]).reshape(1, -1)
+        prediction = model.predict(features)
+        return prediction[0]
+    except:
+        # Fallback rule-based logic if model not available
+        if client_input["complexity"] == "High" or client_input["risk"] == "High":
+            return "Spiral Model"
+        elif client_input["involvement"] == "Active":
+            return "Agile Model"
+        elif client_input["deadline"] == "Yes":
+            return "Waterfall Model"
+        else:
+            return "Iterative Model"
