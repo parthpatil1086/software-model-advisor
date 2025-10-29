@@ -4,13 +4,10 @@ from utils.cost_estimation import estimate_cost
 from utils.budget_optimizer import optimize_budget
 from utils.pdf_generator import generate_pdf
 
-# --- Page Config ---
 st.set_page_config(page_title="Smart Software Model & Budget Suggestion", layout="wide")
 
-# --- App Title ---
 st.title("💼 Smart Software Model & Budget Suggestion System")
 
-# --- Sidebar Navigation ---
 st.sidebar.title("📂 Navigation")
 page = st.sidebar.radio("Go to", [
     "Welcome",
@@ -21,11 +18,9 @@ page = st.sidebar.radio("Go to", [
     "Download Quotation"
 ])
 
-# --- Session State ---
 if 'client_input' not in st.session_state:
     st.session_state.client_input = {}
 
-# --- Welcome Page ---
 if page == "Welcome":
     st.subheader("Welcome!")
     st.markdown("""
@@ -38,7 +33,6 @@ if page == "Welcome":
     Use the sidebar to begin.
     """)
 
-# --- Client Input Page ---
 elif page == "Client Input":
     st.subheader("Enter Detailed Project Requirements")
 
@@ -100,7 +94,6 @@ elif page == "Client Input":
             }
             st.success("✅ Project details saved successfully!")
 
-# --- Model Suggestion Page ---
 elif page == "Model Suggestion":
     st.subheader("🔎 Suggested Development Model")
 
@@ -110,7 +103,6 @@ elif page == "Model Suggestion":
         model = suggest_model(st.session_state.client_input)
         st.markdown(f"### ✅ Recommended Model: **{model}**")
 
-# --- Cost Estimation Page ---
 elif page == "Cost Estimation":
     st.subheader("💰 Estimated Project Cost")
 
@@ -120,7 +112,6 @@ elif page == "Cost Estimation":
         cost = estimate_cost(st.session_state.client_input)
         st.markdown(f"### 💸 Estimated Cost: ₹**{cost}**")
 
-# --- Budget Optimizer Page ---
 elif page == "Budget Optimizer":
     st.subheader("📉 Budget Optimization Suggestion")
 
@@ -135,7 +126,7 @@ elif page == "Budget Optimizer":
             for suggestion in budget_result["suggestions"]:
                 st.markdown(f"- {suggestion}")
 
-# --- PDF Download Page ---
+
 elif page == "Download Quotation":
     st.subheader("📄 Download Quotation PDF")
 
