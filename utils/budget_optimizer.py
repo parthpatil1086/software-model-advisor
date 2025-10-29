@@ -4,7 +4,7 @@ def optimize_budget(estimated_cost, budget_range):
     max_budget = ranges.get(budget_range, 0)
 
     if estimated_cost <= max_budget:
-        return {"within_budget": True, "message": "✅ Project fits within your budget!", "suggestions": []}
+        return {"within_budget": True, "message": "Project fits within your budget!", "suggestions": []}
     else:
         diff = estimated_cost - max_budget
         suggestions = [
@@ -13,4 +13,4 @@ def optimize_budget(estimated_cost, budget_range):
             "Optimize team size or project duration",
             "Consider milestone-based payments"
         ]
-        return {"within_budget": False, "message": f"⚠️ Over budget by ₹{diff}", "suggestions": suggestions}
+        return {"within_budget": False, "message": f"Over budget by ₹{diff}", "suggestions": suggestions}
