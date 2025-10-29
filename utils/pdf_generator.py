@@ -8,12 +8,12 @@ def generate_pdf(client_name, client_input, model, estimated_cost, budget_result
     c.setFont("Helvetica-Bold", 16)
     c.drawString(50, 800, "Software Project Quotation")
 
-    c.setFont("Helvetica", 12)
+    c.setFont("Cambria", 12)
     c.drawString(50, 770, f"Client Name: {client_name}")
     c.drawString(50, 750, f"Project Name: {client_input['project_name']}")
     c.drawString(50, 730, f"Domain: {client_input['domain']}")
     c.drawString(50, 710, f"Recommended Model: {model}")
-    c.drawString(50, 690, f"Estimated Cost: ₹ {estimated_cost}")
+    c.drawString(50, 690, f"Estimated Cost: {estimated_cost}")
     c.drawString(50, 670, f"Budget Status: {budget_result['message']}")
 
     if not budget_result["within_budget"]:
