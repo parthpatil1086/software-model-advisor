@@ -6,7 +6,7 @@ def suggest_model(client_input):
     """Predicts best software model using trained ML model"""
     try:
         model = joblib.load("ml_models/model_suggestion.pkl")
-        # Extract features (simplified)
+        
         features = np.array([
             len(client_input["goal"]),
             client_input["team_size"],
@@ -15,7 +15,6 @@ def suggest_model(client_input):
         prediction = model.predict(features)
         return prediction[0]
     except:
-        # Fallback rule-based logic if model not available
         if client_input["complexity"] == "High" or client_input["risk"] == "High":
             return "Spiral Model"
         elif client_input["involvement"] == "Active":

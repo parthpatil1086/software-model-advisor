@@ -1,0 +1,352 @@
+# 🛠️ Software Model Recommender & Budget Estimator
+
+A smart web app that helps software engineers and clients decide the most suitable **software development model**, estimate project cost, and get optimization suggestions — all in one platform.
+
+## 🔍 Features
+- Multi-page input form
+- Smart suggestion of Waterfall / Agile / V-Model etc.
+- Estimated cost based on project parameters
+- Budget analysis and tips to reduce cost
+- PDF quotation generator
+- Clean interface using Streamlit
+
+## 📁 Project Structure 
+
+## 🚀 Technologies Used
+
+- Python 3
+- Streamlit
+- ReportLab
+- Pandas
+
+## 📦 Deployment
+Can be deployed on:
+- [Streamlit Cloud](https://streamlit.io/cloud)
+- Render
+- GitHub Pages (via iframe)
+
+## 🙋‍♂️ Use Case
+
+Used as an **Industrial Training Project (ITER)** to demonstrate practical software project planning, estimation, and AI-assisted model suggestion.
+
+updated 
+# Smart Software Model & Budget Suggestion System
+
+## 🚀 Overview
+An AI-powered Streamlit app that suggests the best software development model, estimates cost, optimizes budget, and generates a quotation PDF.
+
+## 🛠️ Setup
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+
+💡 Features
+
+Intelligent SDLC model suggestion
+
+ML-based cost estimation
+
+Budget optimization advice
+
+Professional quotation PDF export
+
+
+---
+app.py
+import streamlit as st
+from utils.model_logic import suggest_model
+from utils.cost_estimation import estimate_cost
+from utils.budget_optimizer import optimize_budget
+from utils.pdf_generator import generate_pdf
+
+st.set_page_config(page_title="Smart Software Model & Budget Suggestion", layout="wide")
+
+st.title("💼 Smart Software Model & Budget Suggestion System")
+
+st.sidebar.title("📂 Navigation")
+page = st.sidebar.radio("Go to", [
+    "Welcome",
+    "Client Input",
+    "Model Suggestion",
+    "Cost Estimation",
+    "Budget Optimizer",
+    "Download Quotation"
+])
+
+if 'client_input' not in st.session_state:
+    st.session_state.client_input = {}
+
+if page == "Welcome":
+    st.subheader("Welcome!")
+    st.markdown("""
+    This system helps you:
+    - ✅ Choose the best **software development model**
+    - 💰 Get an **AI-based cost estimate**
+    - 📉 Optimize your **budget and resources**
+    - 📄 Download a **quotation PDF**
+
+    Use the sidebar to begin.
+    """)
+
+elif page == "Client Input":
+    st.subheader("Enter Detailed Project Requirements")
+
+    client_name = st.text_input("Client Name")
+    project_name = st.text_input("Project Name")
+
+    domain = st.selectbox("Project Domain", ["-- Select --", "Web App", "Mobile App", "AI Tool", "Enterprise Software", "Other"])
+    goal = st.selectbox("Primary Goal", ["-- Select --", "E-commerce", "Education", "Healthcare", "Finance", "Entertainment", "Other"])
+    
+    project_duration = st.selectbox("Expected Duration", ["-- Select --", "<1 month", "1–3 months", "3–6 months", ">6 months"])
+    team_size = st.slider("Team Size", 1, 50, 5)
+    experience = st.selectbox("Average Developer Experience", ["-- Select --", "Beginner", "Intermediate", "Expert"])
+    has_manager = st.selectbox("Project Manager Involved?", ["-- Select --", "Yes", "No"])
+    has_testing = st.selectbox("Testing Team Available?", ["-- Select --", "Yes", "No"])
+    
+    complexity = st.selectbox("Project Complexity Level", ["-- Select --", "Low", "Medium", "High"])
+    integration = st.selectbox("Integration Requirement", ["-- Select --", "None", "APIs", "Third-party tools", "Hardware"])
+    stack_type = st.selectbox("Preferred Technology Stack", ["-- Select --", "Custom", "Open Source", "Hybrid"])
+    scalability = st.selectbox("Scalability Requirement", ["-- Select --", "Low", "Medium", "High"])
+    
+    has_deadline = st.selectbox("Is there a fixed deadline?", ["-- Select --", "Yes", "No"])
+    budget_range = st.selectbox("Estimated Budget Range (₹)", ["-- Select --", "<50K", "50K–1L", "1L–5L", ">5L", ">10L"])
+    maintenance = st.selectbox("Maintenance Required After Delivery?", ["-- Select --", "Yes", "No"])
+    payment_type = st.selectbox("Preferred Payment Type", ["-- Select --", "Hourly", "Fixed Cost", "Milestone-based"])
+
+    risk_tolerance = st.selectbox("Risk Tolerance", ["-- Select --", "Low", "Medium", "High"])
+    quality_priority = st.selectbox("Project Priority", ["-- Select --", "Speed", "Cost", "Quality", "Balance"])
+    involvement = st.selectbox("Client Involvement Level", ["-- Select --", "Low", "Moderate", "Active"])
+
+    if st.button("✅ Save Project Input"):
+        fields = [domain, goal, project_duration, experience, has_manager, has_testing, complexity,
+                  integration, stack_type, scalability, has_deadline, budget_range, maintenance,
+                  payment_type, risk_tolerance, quality_priority, involvement]
+        
+        if any(f == "-- Select --" for f in fields) or not client_name or not project_name:
+            st.warning("Please fill out all fields before saving!")
+        else:
+            st.session_state.client_input = {
+                "client_name": client_name,
+                "project_name": project_name,
+                "domain": domain,
+                "goal": goal,
+                "team_size": team_size,
+                "duration": project_duration,
+                "experience": experience,
+                "manager": has_manager,
+                "testing": has_testing,
+                "complexity": complexity,
+                "integration": integration,
+                "stack": stack_type,
+                "scalability": scalability,
+                "deadline": has_deadline,
+                "budget": budget_range,
+                "maintenance": maintenance,
+                "payment": payment_type,
+                "risk": risk_tolerance,
+                "priority": quality_priority,
+                "involvement": involvement
+            }
+            st.success("✅ Project details saved successfully!")
+
+elif page == "Model Suggestion":
+    st.subheader("🔎 Suggested Development Model")
+
+    if not st.session_state.client_input:
+        st.info("Please fill out the Client Input page first.")
+    else:
+        model = suggest_model(st.session_state.client_input)
+        st.markdown(f"### ✅ Recommended Model: **{model}**")
+
+elif page == "Cost Estimation":
+    st.subheader("💰 Estimated Project Cost")
+
+    if not st.session_state.client_input:
+        st.info("Please fill out the Client Input first.")
+    else:
+        cost = estimate_cost(st.session_state.client_input)
+        st.markdown(f"### 💸 Estimated Cost: ₹**{cost}**")
+
+elif page == "Budget Optimizer":
+    st.subheader("📉 Budget Optimization Suggestion")
+
+    if not st.session_state.client_input:
+        st.warning("Please fill out the client input first.")
+    else:
+        client_input = st.session_state.client_input
+        estimated_cost = estimate_cost(client_input)
+        budget_result = optimize_budget(estimated_cost, client_input["budget"])
+        st.markdown(f"### 💡 Optimization Suggestion:\n\n{budget_result['message']}")
+        if not budget_result["within_budget"]:
+            for suggestion in budget_result["suggestions"]:
+                st.markdown(f"- {suggestion}")
+
+
+elif page == "Download Quotation":
+    st.subheader("📄 Download Quotation PDF")
+
+    if not st.session_state.client_input:
+        st.warning("Please fill out the client input first.")
+    else:
+        if st.button("📥 Generate & Download PDF"):
+            client_input = st.session_state.client_input
+            model = suggest_model(client_input)
+            estimated_cost = estimate_cost(client_input)
+            budget_result = optimize_budget(estimated_cost, client_input["budget"])
+            file_path = generate_pdf(client_input["client_name"], client_input, model, estimated_cost, budget_result)
+            with open(file_path, "rb") as f:
+                st.download_button("📄 Download Quotation", data=f, file_name="software_quotation.pdf", mime="application/pdf")
+
+budget_optimizer.py
+
+def optimize_budget(estimated_cost, budget_range):
+    """Compares estimated cost vs selected budget and gives suggestions"""
+    ranges = {"<50K": 50000, "50K–1L": 100000, "1L–5L": 500000, ">5L": 1000000, ">10L": 10000000}
+    max_budget = ranges.get(budget_range, 0)
+
+    if estimated_cost <= max_budget:
+        return {"within_budget": True, "message": "Project fits within your budget!", "suggestions": []}
+    else:
+        diff = estimated_cost - max_budget
+        suggestions = [
+            "Use open-source or free tools",
+            "Reduce project scope or non-critical features",
+            "Optimize team size or project duration",
+            "Consider milestone-based payments"
+        ]
+        return {"within_budget": False, "message": f"Over budget by ₹{diff}", "suggestions": suggestions}
+
+cost_estimation.py
+
+
+import joblib
+import numpy as np
+
+def estimate_cost(client_input):
+    """Estimates project cost using ML model or fallback formula"""
+    try:
+        model = joblib.load("ml_models/cost_estimator.pkl")
+        features = np.array([
+            client_input["team_size"],
+            {"Low": 1, "Medium": 2, "High": 3}.get(client_input["complexity"], 2),
+            {"Beginner": 1, "Intermediate": 2, "Expert": 3}.get(client_input["experience"], 2)
+        ]).reshape(1, -1)
+        return round(model.predict(features)[0])
+    except:
+
+        base = 20000
+        complexity = {"Low": 1, "Medium": 1.5, "High": 2}.get(client_input["complexity"], 1)
+        team_factor = client_input["team_size"] * 3000
+        duration_factor = {"<1 month": 1, "1–3 months": 1.5, "3–6 months": 2, ">6 months": 3}.get(client_input["duration"], 1)
+        return int(base * complexity + team_factor * duration_factor)
+
+model_logic.py
+
+
+import joblib
+import numpy as np
+
+def suggest_model(client_input):
+    """Predicts best software model using trained ML model"""
+    try:
+        model = joblib.load("ml_models/model_suggestion.pkl")
+        
+        features = np.array([
+            len(client_input["goal"]),
+            client_input["team_size"],
+            {"Low": 1, "Medium": 2, "High": 3}.get(client_input["complexity"], 2)
+        ]).reshape(1, -1)
+        prediction = model.predict(features)
+        return prediction[0]
+    except:
+        if client_input["complexity"] == "High" or client_input["risk"] == "High":
+            return "Spiral Model"
+        elif client_input["involvement"] == "Active":
+            return "Agile Model"
+        elif client_input["deadline"] == "Yes":
+            return "Waterfall Model"
+        else:
+            return "Iterative Model"
+
+pdf_generator.py
+
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+from reportlab.lib import colors
+
+def generate_pdf(client_name, client_input, model, estimated_cost, budget_result):
+    """Generates a professional quotation PDF with proper design and spacing."""
+    
+    pdfmetrics.registerFont(TTFont('DejaVu', 'DejaVuSans.ttf'))  # ensure DejaVuSans.ttf is available
+
+    file_path = f"quotation_{client_name.replace(' ', '_')}.pdf"
+    c = canvas.Canvas(file_path, pagesize=A4)
+    width, height = A4
+
+    c.setFont("DejaVu", 22)
+    c.setFillColor(colors.darkblue)
+    c.drawString(50, height - 50, "Software Project Quotation")
+    
+    c.setStrokeColor(colors.darkblue)
+    c.setLineWidth(1)
+    c.line(50, height - 55, width - 50, height - 55)
+
+    y = height - 90
+    line_spacing = 25
+
+    c.setFont("DejaVu", 14)
+    c.setFillColor(colors.black)
+    c.drawString(50, y, "Client & Project Information:")
+    y -= line_spacing
+    
+    c.setFont("DejaVu", 12)
+    c.drawString(70, y, f"Client Name: {client_name}")
+    y -= line_spacing
+    c.drawString(70, y, f"Project Name: {client_input['project_name']}")
+    y -= line_spacing
+    c.drawString(70, y, f"Domain: {client_input['domain']}")
+    y -= line_spacing
+    c.drawString(70, y, f"Recommended Model: {model}")
+    y -= line_spacing
+    c.drawString(70, y, f"Estimated Cost: ₹{estimated_cost}")
+    y -= line_spacing
+
+    c.setFont("DejaVu", 14)
+    if budget_result["within_budget"]:
+        c.setFillColor(colors.green)
+    else:
+        c.setFillColor(colors.red)
+    c.drawString(50, y, f"Budget Status: {budget_result['message']}")
+    y -= line_spacing
+
+    if not budget_result["within_budget"] and budget_result.get("suggestions"):
+        c.setFillColor(colors.darkblue)
+        c.setFont("DejaVu", 14)
+        c.drawString(50, y, "Optimization Suggestions:")
+        y -= line_spacing
+        
+        c.setFont("DejaVu", 12)
+        c.setFillColor(colors.black)
+        for s in budget_result["suggestions"]:
+
+            if len(s) > 80:
+                wrapped_lines = [s[i:i+80] for i in range(0, len(s), 80)]
+                for line in wrapped_lines:
+                    c.drawString(70, y, f"• {line}")
+                    y -= line_spacing
+            else:
+                c.drawString(70, y, f"• {s}")
+                y -= line_spacing
+
+    c.setStrokeColor(colors.gray)
+    c.setLineWidth(0.5)
+    c.line(50, 50, width - 50, 50)
+    
+    c.setFont("DejaVu", 10)
+    c.setFillColor(colors.gray)
+    c.drawString(50, 35, "Generated by Project Quotation Tool")
+
+    c.save()
+    return file_path

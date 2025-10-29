@@ -13,7 +13,7 @@ def estimate_cost(client_input):
         ]).reshape(1, -1)
         return round(model.predict(features)[0])
     except:
-        # Simple fallback formula
+
         base = 20000
         complexity = {"Low": 1, "Medium": 1.5, "High": 2}.get(client_input["complexity"], 1)
         team_factor = client_input["team_size"] * 3000

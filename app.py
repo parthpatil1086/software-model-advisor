@@ -36,63 +36,151 @@ if page == "Welcome":
 elif page == "Client Input":
     st.subheader("Enter Detailed Project Requirements")
 
-    client_name = st.text_input("Client Name")
-    project_name = st.text_input("Project Name")
+    # --- Form container for clean submission ---
+    with st.form("client_form"):
 
-    domain = st.selectbox("Project Domain", ["-- Select --", "Web App", "Mobile App", "AI Tool", "Enterprise Software", "Other"])
-    goal = st.selectbox("Primary Goal", ["-- Select --", "E-commerce", "Education", "Healthcare", "Finance", "Entertainment", "Other"])
-    
-    project_duration = st.selectbox("Expected Duration", ["-- Select --", "<1 month", "1–3 months", "3–6 months", ">6 months"])
-    team_size = st.slider("Team Size", 1, 50, 5)
-    experience = st.selectbox("Average Developer Experience", ["-- Select --", "Beginner", "Intermediate", "Expert"])
-    has_manager = st.selectbox("Project Manager Involved?", ["-- Select --", "Yes", "No"])
-    has_testing = st.selectbox("Testing Team Available?", ["-- Select --", "Yes", "No"])
-    
-    complexity = st.selectbox("Project Complexity Level", ["-- Select --", "Low", "Medium", "High"])
-    integration = st.selectbox("Integration Requirement", ["-- Select --", "None", "APIs", "Third-party tools", "Hardware"])
-    stack_type = st.selectbox("Preferred Technology Stack", ["-- Select --", "Custom", "Open Source", "Hybrid"])
-    scalability = st.selectbox("Scalability Requirement", ["-- Select --", "Low", "Medium", "High"])
-    
-    has_deadline = st.selectbox("Is there a fixed deadline?", ["-- Select --", "Yes", "No"])
-    budget_range = st.selectbox("Estimated Budget Range (₹)", ["-- Select --", "<50K", "50K–1L", "1L–5L", ">5L", ">10L"])
-    maintenance = st.selectbox("Maintenance Required After Delivery?", ["-- Select --", "Yes", "No"])
-    payment_type = st.selectbox("Preferred Payment Type", ["-- Select --", "Hourly", "Fixed Cost", "Milestone-based"])
+        st.write("### 👤 Basic Details")
+        client_name = st.text_input("Client Name", key="client_name")
+        project_name = st.text_input("Project Name", key="project_name")
 
-    risk_tolerance = st.selectbox("Risk Tolerance", ["-- Select --", "Low", "Medium", "High"])
-    quality_priority = st.selectbox("Project Priority", ["-- Select --", "Speed", "Cost", "Quality", "Balance"])
-    involvement = st.selectbox("Client Involvement Level", ["-- Select --", "Low", "Moderate", "Active"])
+        st.write("### 💻 Project Details")
+        domain = st.selectbox(
+            "Project Domain",
+            ["-- Select --", "Web App", "Mobile App", "AI Tool", "Enterprise Software", "Other"],
+            key="domain"
+        )
+        goal = st.selectbox(
+            "Primary Goal",
+            ["-- Select --", "E-commerce", "Education", "Healthcare", "Finance", "Entertainment", "Other"],
+            key="goal"
+        )
 
-    if st.button("✅ Save Project Input"):
-        fields = [domain, goal, project_duration, experience, has_manager, has_testing, complexity,
-                  integration, stack_type, scalability, has_deadline, budget_range, maintenance,
-                  payment_type, risk_tolerance, quality_priority, involvement]
-        
-        if any(f == "-- Select --" for f in fields) or not client_name or not project_name:
-            st.warning("Please fill out all fields before saving!")
+        project_duration = st.selectbox(
+            "Expected Duration",
+            ["-- Select --", "<1 month", "1–3 months", "3–6 months", ">6 months"],
+            key="duration"
+        )
+        team_size = st.slider("Team Size", 1, 50, 5, key="team_size")
+        experience = st.selectbox(
+            "Average Developer Experience",
+            ["-- Select --", "Beginner", "Intermediate", "Expert"],
+            key="experience"
+        )
+        has_manager = st.selectbox(
+            "Project Manager Involved?",
+            ["-- Select --", "Yes", "No"],
+            key="manager"
+        )
+        has_testing = st.selectbox(
+            "Testing Team Available?",
+            ["-- Select --", "Yes", "No"],
+            key="testing"
+        )
+
+        st.write("### ⚙️ Technical Details")
+        complexity = st.selectbox(
+            "Project Complexity Level",
+            ["-- Select --", "Low", "Medium", "High"],
+            key="complexity"
+        )
+        integration = st.selectbox(
+            "Integration Requirement",
+            ["-- Select --", "None", "APIs", "Third-party tools", "Hardware"],
+            key="integration"
+        )
+        stack_type = st.selectbox(
+            "Preferred Technology Stack",
+            ["-- Select --", "Custom", "Open Source", "Hybrid"],
+            key="stack"
+        )
+        scalability = st.selectbox(
+            "Scalability Requirement",
+            ["-- Select --", "Low", "Medium", "High"],
+            key="scalability"
+        )
+
+        st.write("### 💰 Budget & Delivery")
+        has_deadline = st.selectbox(
+            "Is there a fixed deadline?",
+            ["-- Select --", "Yes", "No"],
+            key="deadline"
+        )
+        budget_range = st.selectbox(
+            "Estimated Budget Range (₹)",
+            ["-- Select --", "<50K", "50K–1L", "1L–5L", ">5L", ">10L"],
+            key="budget"
+        )
+        maintenance = st.selectbox(
+            "Maintenance Required After Delivery?",
+            ["-- Select --", "Yes", "No"],
+            key="maintenance"
+        )
+        payment_type = st.selectbox(
+            "Preferred Payment Type",
+            ["-- Select --", "Hourly", "Fixed Cost", "Milestone-based"],
+            key="payment"
+        )
+
+        st.write("### ⚖️ Project Priorities")
+        risk_tolerance = st.selectbox(
+            "Risk Tolerance",
+            ["-- Select --", "Low", "Medium", "High"],
+            key="risk"
+        )
+        quality_priority = st.selectbox(
+            "Project Priority",
+            ["-- Select --", "Speed", "Cost", "Quality", "Balance"],
+            key="priority"
+        )
+        involvement = st.selectbox(
+            "Client Involvement Level",
+            ["-- Select --", "Low", "Moderate", "Active"],
+            key="involvement"
+        )
+
+        # --- Submit button ---
+        submitted = st.form_submit_button("✅ Save Project Input")
+
+    # --- After submission ---
+    if submitted:
+        fields = [
+            st.session_state.domain, st.session_state.goal,
+            st.session_state.duration, st.session_state.experience,
+            st.session_state.manager, st.session_state.testing,
+            st.session_state.complexity, st.session_state.integration,
+            st.session_state.stack, st.session_state.scalability,
+            st.session_state.deadline, st.session_state.budget,
+            st.session_state.maintenance, st.session_state.payment,
+            st.session_state.risk, st.session_state.priority,
+            st.session_state.involvement
+        ]
+
+        if any(f == "-- Select --" for f in fields) or not st.session_state.client_name or not st.session_state.project_name:
+            st.warning("⚠️ Please fill out all fields before saving!")
         else:
             st.session_state.client_input = {
-                "client_name": client_name,
-                "project_name": project_name,
-                "domain": domain,
-                "goal": goal,
-                "team_size": team_size,
-                "duration": project_duration,
-                "experience": experience,
-                "manager": has_manager,
-                "testing": has_testing,
-                "complexity": complexity,
-                "integration": integration,
-                "stack": stack_type,
-                "scalability": scalability,
-                "deadline": has_deadline,
-                "budget": budget_range,
-                "maintenance": maintenance,
-                "payment": payment_type,
-                "risk": risk_tolerance,
-                "priority": quality_priority,
-                "involvement": involvement
+                "client_name": st.session_state.client_name,
+                "project_name": st.session_state.project_name,
+                "domain": st.session_state.domain,
+                "goal": st.session_state.goal,
+                "team_size": st.session_state.team_size,
+                "duration": st.session_state.duration,
+                "experience": st.session_state.experience,
+                "manager": st.session_state.manager,
+                "testing": st.session_state.testing,
+                "complexity": st.session_state.complexity,
+                "integration": st.session_state.integration,
+                "stack": st.session_state.stack,
+                "scalability": st.session_state.scalability,
+                "deadline": st.session_state.deadline,
+                "budget": st.session_state.budget,
+                "maintenance": st.session_state.maintenance,
+                "payment": st.session_state.payment,
+                "risk": st.session_state.risk,
+                "priority": st.session_state.priority,
+                "involvement": st.session_state.involvement
             }
-            st.success("✅ Project details saved successfully!")
+            st.success("✅ Project details saved successfully! Data will persist across all tabs.")
 
 elif page == "Model Suggestion":
     st.subheader("🔎 Suggested Development Model")
